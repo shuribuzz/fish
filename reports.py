@@ -118,45 +118,6 @@ def maxnumbrequesthour():
 
     print('Максимальное число запросов на сайт за астрономический час: ' + str(max(dict_dh.values())))
 
-# 6.Сколько брошенных (не оплаченных) корзин имеется?
-def unpaidcarts():
-    cartid_set = set()
-    payid_arr = []
-    count = 0
-
-    cursor.execute("SELECT Category FROM testtable WHERE Category LIKE 'cart?goods%'")
-    cart = cursor.fetchall()
-    cart_arr = to_arr(cart)
-
-    for i in cart_arr:
-        cart_id = parse.parse_qs(parse.urlparse(i).query)['cart_id'][0]
-        cartid_set.add(cart_id)
-
-    cursor.execute("SELECT Category FROM testtable WHERE Category LIKE 'pay?user%'")
-    pay = cursor.fetchall()
-    pay_arr = to_arr(pay)
-
-    for i in pay_arr:
-        pay_cart_id = parse.parse_qs(parse.urlparse(i).query)['cart_id'][0]
-        payid_arr.append(pay_cart_id)
-
-    for i in cartid_set:
-        if i not in payid_arr:
-            count += 1
-    print('Количество брошенных корзин: ' + str(count))
-
-# 7.Какое количество пользователей совершали повторные покупки?
-def doublesuccesspay():
-    cursor.execute("SELECT IP FROM testtable WHERE Category LIKE 'success_pay_%'")
-    success_pay = cursor.fetchall()
-    c = Counter(success_pay)
-    arr = []
-    for i in c.values():
-            if i > 1:
-                arr.append(i)
-    print('Количество пользователей, которые совершали повторные покупки: ' + str(len(arr)))
-
-
 # 5.Товары из какой категории чаще всего покупают совместно с товаром из категории “semi_manufactures”?
 def semi():
     semi_list = []
@@ -202,4 +163,45 @@ def semi():
     product = max(dt.items(), key=operator.itemgetter(1))[0]
 
     print('Товары этой категории чаще всего покупают совместно с товаром из категории “semi_manufactures”: ' + str(product))
+
+# 6.Сколько брошенных (не оплаченных) корзин имеется?
+def unpaidcarts():
+    cartid_set = set()
+    payid_arr = []
+    count = 0
+
+    cursor.execute("SELECT Category FROM testtable WHERE Category LIKE 'cart?goods%'")
+    cart = cursor.fetchall()
+    cart_arr = to_arr(cart)
+
+    for i in cart_arr:
+        cart_id = parse.parse_qs(parse.urlparse(i).query)['cart_id'][0]
+        cartid_set.add(cart_id)
+
+    cursor.execute("SELECT Category FROM testtable WHERE Category LIKE 'pay?user%'")
+    pay = cursor.fetchall()
+    pay_arr = to_arr(pay)
+
+    for i in pay_arr:
+        pay_cart_id = parse.parse_qs(parse.urlparse(i).query)['cart_id'][0]
+        payid_arr.append(pay_cart_id)
+
+    for i in cartid_set:
+        if i not in payid_arr:
+            count += 1
+    print('Количество брошенных корзин: ' + str(count))
+
+# 7.Какое количество пользователей совершали повторные покупки?
+def doublesuccesspay():
+    cursor.execute("SELECT IP FROM testtable WHERE Category LIKE 'success_pay_%'")
+    success_pay = cursor.fetchall()
+    c = Counter(success_pay)
+    arr = []
+    for i in c.values():
+            if i > 1:
+                arr.append(i)
+    print('Количество пользователей, которые совершали повторные покупки: ' + str(len(arr)))
+
+
+
 #tesdb.close()
