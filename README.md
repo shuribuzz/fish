@@ -3,4 +3,4 @@
 
 Используется БД SQLite, дамп testtable.sql.
 
-Запуск python3 main.py
+Запуск: python3 main.py
