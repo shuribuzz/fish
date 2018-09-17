@@ -1,9 +1,9 @@
 from reports import *
 
-visitors()
-visitorsfresh()
+popularcountry()
+popularcountryfresh()
 timesofday()
-maxnumbrequesthour()
+maxnumrequesthour()
 semi()
 unpaidcarts()
 doublesuccesspay()
